@@ -8,7 +8,7 @@ module Sentence
       Enumerator.new do |yielder|
         prev = take(n - 1)
         remain = drop(n - 1)
-        return to_a if remain.empty?
+        return (block_given? ? yield(prev) : prev) if remain.empty?
 
         remain.each do |item|
           prev << item
