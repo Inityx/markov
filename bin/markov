@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+
+require 'markov'
+
+abort 'Usage: markov filename' if ARGV.count.zero?
+
+markov = Markov.new
+
+ARGV.each do |filename|
+  File.open(filename, 'r', &markov.method(:train_text))
+end
+
+begin
+  loop do
+    puts markov.random_sentence
+    STDIN.gets
+  end
+rescue Interrupt
+  STDERR.puts "\nExiting."
+end
