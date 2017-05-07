@@ -7,13 +7,16 @@ abort 'Usage: markov filename' if ARGV.count.zero?
 markov = Markov.new
 
 ARGV.each do |filename|
+  STDERR.print "Training from #{filename}..."
   File.open(filename, 'r', &markov.method(:train_text))
+  STDERR.puts ' Done.'
 end
+STDERR.puts 'Press enter for a new sentence; Ctrl+C when done.'
 
 begin
   loop do
-    puts markov.random_sentence
     STDIN.gets
+    puts markov.random_sentence
   end
 rescue Interrupt
   STDERR.puts "\nExiting."
