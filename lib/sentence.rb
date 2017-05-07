@@ -5,21 +5,21 @@ module Sentence
 
   refine Enumerable do
     def moving_slice(n)
-      Enumerator.new do |y|
+      Enumerator.new do |yielder|
         prev = take(n - 1)
         remain = drop(n - 1)
         return to_a if remain.empty?
 
         remain.each do |item|
           prev << item
-          y << block_given? ? yield(*prev) : prev
+          yielder << block_given? ? yield(*prev) : prev
           prev.shift
         end
       end
     end
 
     def by_sentence
-      Enumerator.new do |y|
+      Enumerator.new do |yielder|
         buffer = ''
 
         each do |line|
@@ -31,7 +31,7 @@ module Sentence
 
           while chunks.count > 1
             sentence = chunks.shift
-            y << sentence unless sentence.empty?
+            yielder << sentence unless sentence.empty?
           end
 
           remainder = chunks.first
@@ -41,7 +41,7 @@ module Sentence
           buffer = remainder
         end
 
-        y << (buffer.end_with?('.') ? buffer[0..-2] : buffer)
+        yielder << (buffer.end_with?('.') ? buffer[0..-2] : buffer)
       end
     end
   end
