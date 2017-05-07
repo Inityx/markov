@@ -41,7 +41,9 @@ module Sentence
           buffer = remainder
         end
 
-        yielder << (buffer.end_with?('.') ? buffer[0..-2] : buffer)
+        unless buffer == '. '
+          yielder << (buffer.end_with?('.') ? buffer[0..-2] : buffer)
+        end
       end
     end
   end

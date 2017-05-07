@@ -4,6 +4,8 @@ require 'sentence'
 class Markov
   using Sentence
 
+  WORD_DELIMITERS = %r{ |"|,|\/|-|\(|\)}
+
   # Word/count pair
   class Mapping
     attr_reader :word, :count
@@ -15,6 +17,10 @@ class Markov
 
     def increment
       @count += 1
+    end
+
+    def inspect
+      "(#{word.inspect}: #{count})"
     end
   end
 
@@ -32,7 +38,7 @@ class Markov
   end
 
   def train_sentence(sentence)
-    words = sentence.downcase.split(' ')
+    words = sentence.downcase.split(WORD_DELIMITERS).reject(&:empty?)
     ([:start] + words + [:end])
       .moving_slice(3) { |key1, key2, value| add(key1, key2, value) }
       .count
