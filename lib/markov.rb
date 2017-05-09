@@ -4,7 +4,7 @@ require 'sentence'
 class Markov
   using Sentence
 
-  WORD_DELIMITERS = %r{ |"|,|\/|-|\(|\)}
+  WORD_DELIMITERS = / |"/
 
   # Word/count pair
   class Mapping

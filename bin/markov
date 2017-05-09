@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'markov'
+require 'time'
 
 abort 'Usage: markov filename' if ARGV.count.zero?
 
@@ -8,8 +9,10 @@ markov = Markov.new
 
 ARGV.each do |filename|
   STDERR.print "Training from #{filename}..."
+  t1 = Time.now
   File.open(filename, 'r', &markov.method(:train_text))
-  STDERR.puts ' Done.'
+  t2 = Time.now
+  STDERR.puts "Done in #{t2 - t1} seconds"
 end
 STDERR.puts 'Press enter for a new sentence; Ctrl+C when done.'
 
