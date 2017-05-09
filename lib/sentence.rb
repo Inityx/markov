@@ -8,12 +8,15 @@ module Sentence
       Enumerator.new do |yielder|
         prev = take(n - 1)
         remain = drop(n - 1)
-        yielder << (block_given? ? yield(prev) : prev) if remain.empty?
 
-        remain.each do |item|
-          prev << item
-          yielder << block_given? ? yield(*prev) : prev
-          prev.shift
+        if remain.any?
+          remain.each do |item|
+            prev << item
+            yielder << (block_given? ? yield(prev) : prev.clone)
+            prev.shift
+          end
+        else
+          yielder << (block_given? ? yield(prev) : prev.clone)
         end
       end
     end
