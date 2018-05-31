@@ -1,11 +1,17 @@
+AllCops:
+  TargetRubyVersion: 2.5
+
 Metrics/BlockLength:
-    Enabled: false
+  Enabled: false
 
 Metrics/AbcSize:
-    Enabled: False
+  Enabled: False
 
 Metrics/MethodLength:
-    Enabled: False
+  Enabled: False
 
-Style/MultilineMethodCallIndentation:
-    EnforcedStyle: indented
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Style/ParallelAssignment:
+  Enabled: False

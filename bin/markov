@@ -7,13 +7,24 @@ abort 'Usage: markov filename' if ARGV.count.zero?
 
 markov = Markov.new
 
+def time
+  t1 = Time.now
+  yield
+  t2 = Time.now
+
+  t2 - t1
+end
+
 ARGV.each do |filename|
   STDERR.print "Training from #{filename}..."
-  t1 = Time.now
-  File.open(filename, 'r', &markov.method(:train_text))
-  t2 = Time.now
-  STDERR.puts "Done in #{t2 - t1} seconds"
+
+  duration = time do
+    File.open(filename, 'r', &markov.method(:train_text))
+  end
+
+  STDERR.puts "Trained in #{duration} seconds"
 end
+
 STDERR.puts 'Press enter for a new sentence; Ctrl+C when done.'
 
 begin

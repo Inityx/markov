@@ -1,13 +1,16 @@
+# frozen_string_literal: true
+
 # Modifiers for manipulating sentences
 module Sentence
   SENTENCE_DELIMITERS = /\.|\?|!/
   SENTENCE_END = /#{SENTENCE_DELIMITERS}$/
 
   refine Enumerable do
-    def moving_slice(n)
+    def moving_slice(count)
+      # TODO: move to Array and use slicing
       Enumerator.new do |yielder|
-        prev = take(n - 1)
-        remain = drop(n - 1)
+        prev = take(count - 1)
+        remain = drop(count - 1)
 
         if remain.any?
           remain.each do |item|
@@ -23,7 +26,7 @@ module Sentence
 
     def by_sentence
       Enumerator.new do |yielder|
-        buffer = ''
+        buffer = +''
 
         each do |line|
           buffer << line
@@ -36,7 +39,6 @@ module Sentence
             sentence = chunks.shift
             yielder << sentence unless sentence.empty?
           end
-
           remainder = chunks.first
           remainder << '.' if buffer =~ SENTENCE_END
           remainder << ' '
